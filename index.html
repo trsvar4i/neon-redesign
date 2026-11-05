@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>NEON: кабинки с PS5 и караоке в Ташкенте</title>
+  <meta name="description" content="Отдельные кабинки с PS5, караоке и настольными играми в центре Ташкента. Два адреса, плата только за время, от 55 000 сум в час. Открыты каждый день с 10:00 до 06:00.">
+  <meta name="theme-color" content="#0b0b09">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://thb.tildacdn.net">
+  <link href="https://fonts.googleapis.com/css2?family=Martian+Mono:wght@400;600&family=Onest:wght@400;500;700&family=Sofia+Sans+Extra+Condensed:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip" href="#cabins">Перейти к кабинкам</a>
+
+  <header class="site-header" id="top">
+    <a class="logo" href="index.html" aria-label="NEON, на главную">
+      <img src="https://thb.tildacdn.net/tild3866-3061-4435-a433-343161316332/-/resize/160x/IMG_4835.PNG" alt="" width="60" height="54">
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav">Меню</button>
+    <nav class="nav" id="nav" aria-label="Основная навигация">
+      <a href="#cabins">Кабинки</a>
+      <a href="#branches">Адреса</a>
+      <a href="#offers">Акции</a>
+      <a href="menu.html">Еда и бар</a>
+      <a href="#games">Игры</a>
+      <a href="#faq">Вопросы</a>
+      <a href="#contacts">Контакты</a>
+    </nav>
+    <a class="header-phone mono" data-phone href="tel:+998781138951">+998 78 113 89 51</a>
+    <button class="btn btn-volt btn-sm header-cta" type="button" data-book>Забронировать</button>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="hero-title">
+      <img class="hero-photo"
+        src="https://thb.tildacdn.net/tild3363-3566-4533-b564-633737363361/-/resize/1200x/__15.jpg"
+        srcset="https://thb.tildacdn.net/tild3363-3566-4533-b564-633737363361/-/resize/800x/__15.jpg 800w, https://thb.tildacdn.net/tild3363-3566-4533-b564-633737363361/-/resize/1200x/__15.jpg 1200w, https://thb.tildacdn.net/tild3363-3566-4533-b564-633737363361/-/resize/1680x/__15.jpg 1680w"
+        sizes="100vw" alt="Кабинка NEON: неоновый портрет на зелёной стене, телевизор с PS5 и диван" fetchpriority="high">
+      <div class="hero-inner wrap">
+        <div class="hero-copy">
+          <p class="eyebrow mono">Ташкент · 2 адреса · 30+ кабинок</p>
+          <h1 id="hero-title">Своя кабинка. Свои люди. <em>Платите только за&nbsp;время.</em></h1>
+          <p class="hero-sub">PS5, караоке и настолки в отдельной комнате для вашей компании. Открыты каждый день с 10:00 до 06:00.</p>
+        </div>
+        <form class="quick" id="quick" aria-label="Быстрый подбор кабинки">
+          <div class="quick-row">
+            <span class="quick-label" id="quick-guests-label">Сколько вас?</span>
+            <div class="stepper" role="group" aria-labelledby="quick-guests-label">
+              <button type="button" data-step="-1" aria-label="Меньше гостей">−</button>
+              <output class="mono" data-guests>—</output>
+              <button type="button" data-step="1" aria-label="Больше гостей">+</button>
+            </div>
+          </div>
+          <label class="toggle quick-row">
+            <span class="quick-label">Нужно караоке</span>
+            <input type="checkbox" data-karaoke>
+            <span class="toggle-track" aria-hidden="true"></span>
+          </label>
+          <button class="btn btn-volt btn-block" type="submit"><span data-quick-label>Показать кабинки</span></button>
+          <p class="quick-note mono">от 55 000 сум в час за всю кабинку</p>
+        </form>
+      </div>
+    </section>
+
+    <section class="section finder" id="cabins" aria-labelledby="cabins-title">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 id="cabins-title">Выберите кабинку</h2>
+          <p class="section-lead">Цена за всю кабинку, а не за гостя. В неё уже входят <strong>PS5, настольные игры и фильмы через Allplay</strong>.</p>
+        </div>
+
+        <div class="filters">
+          <div class="filter-location">
+            <span class="filter-label" id="f-location">Филиал</span>
+            <div class="location-options" id="location-filter" role="group" aria-labelledby="f-location"></div>
+          </div>
+          <div class="filter-group">
+            <span class="filter-label" id="f-guests">Гостей</span>
+            <div class="stepper" role="group" aria-labelledby="f-guests">
+              <button type="button" data-step="-1" aria-label="Меньше гостей">−</button>
+              <output class="mono" data-guests>—</output>
+              <button type="button" data-step="1" aria-label="Больше гостей">+</button>
+            </div>
+          </div>
+          <label class="toggle filter-group">
+            <span class="filter-label">Караоке</span>
+            <input type="checkbox" data-karaoke>
+            <span class="toggle-track" aria-hidden="true"></span>
+          </label>
+          <div class="filter-categories" id="category-row" hidden>
+            <span class="filter-label" id="f-category">Категория</span>
+            <div class="segments" id="branch-filter" role="group" aria-labelledby="f-category"></div>
+          </div>
+        </div>
+
+        <p class="result-count" id="result-count" role="status"></p>
+        <div class="cabin-grid" id="cabin-grid"></div>
+        <div class="grid-more"><button class="btn btn-ghost" type="button" id="show-more" hidden></button></div>
+      </div>
+    </section>
+
+    <section class="section branches" id="branches" aria-labelledby="branches-title">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 id="branches-title">Два адреса, четыре настроения</h2>
+        </div>
+        <div class="branch-list" id="branch-list"></div>
+        <article class="veranda">
+          <img id="veranda-img" alt="Летняя веранда NEON: столики под зонтами среди деревьев" loading="lazy">
+          <div class="veranda-copy">
+            <h3>Летняя веранда</h3>
+            <p>Столики на свежем воздухе, чтобы поиграть в настолки или посидеть с кальяном. Депозит — один кальян.</p>
+            <button class="btn btn-ghost" type="button" data-book="veranda">Забронировать столик</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section offers" id="offers" aria-labelledby="offers-title">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 id="offers-title">Акции и кэшбэк</h2>
+        </div>
+        <div class="deal">
+          <div class="deal-big" aria-hidden="true">−50%</div>
+          <div class="deal-copy">
+            <h3>Все кабинки Luxury за полцены</h3>
+            <p class="mono">Понедельник–четверг, 10:00–15:00</p>
+            <p>Скидка считается автоматически, когда вы выбираете время в форме брони.</p>
+          </div>
+          <button class="btn btn-ink" type="button" data-book="luxury-deal">Забронировать днём</button>
+        </div>
+        <div class="set-grid" id="set-grid"></div>
+        <div class="club">
+          <div class="club-copy">
+            <h3>NEON Club</h3>
+            <p>Кэшбэк с каждого чека за регулярные визиты. 1 балл = 1 сум. Баллы сгорают через 45 дней. Не начисляются и не списываются за кухню, кальяны и сеты; списание — при чеке от 80 000 сум.</p>
+            <a class="btn btn-ghost" id="club-link" target="_blank" rel="noopener">Зарегистрироваться в Telegram</a>
+          </div>
+          <table class="club-table">
+            <thead><tr><th scope="col">Уровень</th><th scope="col">Кэшбэк</th><th scope="col">Можно списать</th></tr></thead>
+            <tbody id="club-rows"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="food-teaser" id="food" aria-labelledby="food-title">
+      <div class="wrap food-inner">
+        <div class="food-copy">
+          <p class="eyebrow mono">Snack Food × NEON</p>
+          <h2 id="food-title">Своя кухня и бар</h2>
+          <p>Авторская кухня от шеф-повара, лимонады, шейки и чаи. Каждую порцию хочется делить — не потому что мало, а потому что вкусно вместе.</p>
+          <div class="food-links">
+            <a class="btn btn-cream" href="menu.html">Открыть меню</a>
+            <a class="food-link" href="menu.html#bar">Бар</a>
+            <a class="food-link" href="menu.html#tea">Чай и кофе</a>
+            <a class="food-link" href="menu.html#hookah">Кальяны</a>
+          </div>
+        </div>
+        <div class="food-photos" id="food-photos"></div>
+      </div>
+    </section>
+
+    <section class="section games" id="games" aria-labelledby="games-title">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 id="games-title">Во что будем играть?</h2>
+          <p class="section-lead">Можно подключить свой аккаунт и установить свои игры: сотрудники помогут.</p>
+        </div>
+        <div class="games-bar">
+          <div class="segments" id="game-tabs" role="group" aria-label="Категория игр"></div>
+          <label class="game-search">
+            <span class="sr-only">Поиск игры</span>
+            <input type="search" id="game-search" placeholder="Найти игру: FIFA, Бункер…" autocomplete="off">
+          </label>
+        </div>
+        <div class="game-groups" id="game-groups" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section class="section faq" id="faq" aria-labelledby="faq-title">
+      <div class="wrap faq-layout">
+        <h2 id="faq-title">Частые вопросы</h2>
+        <div class="faq-list" id="faq-list"></div>
+      </div>
+    </section>
+
+    <section class="section contacts" id="contacts" aria-labelledby="contacts-title">
+      <div class="wrap">
+        <h2 id="contacts-title">Как нас найти</h2>
+        <div class="contact-grid">
+          <div class="contact-card contact-main">
+            <p class="filter-label">Бронь по телефону</p>
+            <a class="contact-phone" data-phone href="tel:+998781138951">+998 78 113 89 51</a>
+            <p class="mono contact-hours">Каждый день, 10:00–06:00</p>
+            <button class="btn btn-volt" type="button" data-book>Забронировать онлайн</button>
+          </div>
+          <div class="contact-card" id="addr-mirabad"></div>
+          <div class="contact-card" id="addr-shevchenko"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <span class="mono">© NEON, Ташкент</span>
+      <nav aria-label="Ссылки в подвале" class="footer-links">
+        <a id="foot-ig" target="_blank" rel="noopener">Instagram</a>
+        <a id="foot-tg" target="_blank" rel="noopener">Telegram</a>
+        <a id="foot-review" target="_blank" rel="noopener">Оставить отзыв</a>
+      </nav>
+    </div>
+  </footer>
+
+  <div class="mobile-bar">
+    <a class="btn btn-ghost" data-phone-only href="tel:+998781138951">Позвонить</a>
+    <button class="btn btn-volt" type="button" data-book>Забронировать</button>
+  </div>
+
+  <dialog class="sheet" id="cabin-dialog" aria-labelledby="cabin-dialog-title">
+    <button class="sheet-close" type="button" data-close aria-label="Закрыть">✕</button>
+    <div id="cabin-dialog-body"></div>
+  </dialog>
+
+  <dialog class="sheet sheet-form" id="book-dialog" aria-labelledby="book-title">
+    <button class="sheet-close" type="button" data-close aria-label="Закрыть">✕</button>
+    <div id="book-form-view">
+      <h2 id="book-title">Бронь кабинки</h2>
+      <p class="sheet-lead">Менеджер перезвонит в течение 15 минут и подтвердит бронь.</p>
+      <form id="book-form" novalidate>
+        <div class="field">
+          <label for="b-cabin">Кабинка</label>
+          <select id="b-cabin"></select>
+        </div>
+        <div class="field">
+          <span class="field-label" id="b-date-label">Дата</span>
+          <div class="date-row">
+            <div class="segments" role="group" aria-labelledby="b-date-label">
+              <button type="button" id="b-today"></button>
+              <button type="button" id="b-tomorrow"></button>
+            </div>
+            <input type="date" id="b-date" aria-labelledby="b-date-label">
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="b-time">Время</label>
+            <select id="b-time"></select>
+          </div>
+          <div class="field">
+            <span class="field-label" id="b-hours-label">Часов</span>
+            <div class="stepper" role="group" aria-labelledby="b-hours-label">
+              <button type="button" id="b-hours-minus" aria-label="Меньше часов">−</button>
+              <output class="mono" id="b-hours">2</output>
+              <button type="button" id="b-hours-plus" aria-label="Больше часов">+</button>
+            </div>
+          </div>
+          <div class="field">
+            <span class="field-label" id="b-guests-label">Гостей</span>
+            <div class="stepper" role="group" aria-labelledby="b-guests-label">
+              <button type="button" id="b-guests-minus" aria-label="Меньше гостей">−</button>
+              <output class="mono" id="b-guests">4</output>
+              <button type="button" id="b-guests-plus" aria-label="Больше гостей">+</button>
+            </div>
+          </div>
+        </div>
+        <p class="capacity-warn" id="b-capacity" hidden></p>
+        <div class="field-row field-row-2">
+          <div class="field">
+            <label for="b-name">Имя</label>
+            <input id="b-name" type="text" autocomplete="given-name" required aria-describedby="b-name-err">
+            <p class="field-error" id="b-name-err" hidden>Как к вам обращаться?</p>
+          </div>
+          <div class="field">
+            <label for="b-phone">Телефон</label>
+            <input id="b-phone" type="tel" inputmode="tel" autocomplete="tel" required value="+998 " aria-describedby="b-phone-err">
+            <p class="field-error" id="b-phone-err" hidden>Введите номер полностью: +998 XX XXX XX XX</p>
+          </div>
+        </div>
+        <div class="total" id="b-total" aria-live="polite"></div>
+        <p class="field-error" id="b-send-err" hidden></p>
+        <button class="btn btn-volt btn-block" type="submit" id="b-submit">Отправить заявку</button>
+      </form>
+    </div>
+    <div id="book-done" hidden tabindex="-1">
+      <h2>Заявка готова</h2>
+      <p class="demo-note">Это демо-версия сайта: заявка никуда не отправлена. Форму подключим к вашей почте, CRM или Telegram при запуске.</p>
+      <dl class="done-list" id="done-list"></dl>
+      <button class="btn btn-ghost btn-block" type="button" data-close>Готово</button>
+    </div>
+  </dialog>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+  <script src="motion.js"></script>
+</body>
+</html>

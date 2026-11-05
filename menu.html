@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Меню Snack Food × NEON: кухня, бар, чай, кальяны</title>
+  <meta name="description" content="Меню NEON в Ташкенте: бургеры, сэндвичи, хот-доги, десерты, лимонады, авторские чаи, кофе и кальяны с ценами.">
+  <meta name="theme-color" content="#f52b26">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://thb.tildacdn.net">
+  <link href="https://fonts.googleapis.com/css2?family=Martian+Mono:wght@400;600&family=Onest:wght@400;500;700&family=Sofia+Sans+Extra+Condensed:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="menu-page">
+  <header class="menu-header">
+    <div class="wrap menu-head-row">
+      <a class="text-link back" href="index.html">← На главную</a>
+      <a class="btn btn-ink btn-sm" href="index.html#book">Забронировать</a>
+    </div>
+    <div class="wrap">
+      <p class="eyebrow mono">Snack Food × NEON</p>
+      <h1>Меню</h1>
+      <p class="menu-lead">Авторская кухня от шеф-повара, бар и чайная карта. Приносить свою еду и напитки нельзя, кроме тортов. Цены в сумах.</p>
+    </div>
+  </header>
+
+  <nav class="menu-nav" aria-label="Разделы меню">
+    <div class="menu-nav-scroll" id="menu-nav"></div>
+  </nav>
+
+  <main class="wrap" id="menu-main"></main>
+
+  <footer class="menu-foot">
+    <div class="wrap footer-inner">
+      <a class="btn btn-ink" href="index.html#book">Забронировать кабинку</a>
+      <a class="text-link" href="tel:+998781138951">+998 78 113 89 51</a>
+    </div>
+  </footer>
+
+  <script src="data.js"></script>
+  <script>
+    const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    const num = (n) => Math.round(n).toLocaleString('ru-RU').replace(/\s/g, ' ');
+
+    const dish = (f) => `
+      <li class="dish">
+        <div class="dish-photo"><img src="${photo(f.img, 480)}" srcset="${photo(f.img, 480)} 480w, ${photo(f.img, 800)} 800w" sizes="(max-width: 700px) 50vw, 25vw" alt="" loading="lazy"></div>
+        <div class="dish-body">
+          <h3>${esc(f.name)}${f.tag ? ` <span class="dish-tag mono">${f.tag}</span>` : ''}</h3>
+          ${f.desc ? `<p>${esc(f.desc)}</p>` : ''}
+          <p class="dish-price mono">${f.priceNote ? esc(f.priceNote) : num(f.price)}</p>
+        </div>
+      </li>`;
+
+    const rows = (items) => `<ul class="price-list">${items.map(([n, p]) => `<li><span>${esc(n)}</span><span class="mono">${esc(p)}</span></li>`).join('')}</ul>`;
+
+    const sections = [
+      ...FOOD.map((c) => ({ id: c.id, title: c.title, html: `<ul class="dish-grid">${c.items.map(dish).join('')}</ul>` })),
+      {
+        id: 'bar', title: 'Бар',
+        html: `<div class="list-grid">${BAR.map((g) => `<div class="list-card"><h3>${g.title}</h3>${g.note ? `<p class="list-note mono">${g.note}</p>` : ''}${rows(g.items)}</div>`).join('')}</div>`,
+      },
+      {
+        id: 'tea', title: 'Чай и кофе',
+        html: `<div class="list-grid">${TEA.map((g) => `<div class="list-card"><h3>${g.title}</h3><p class="list-note mono">${g.note}</p>
+          <ul class="tea-list">${g.items.map(([n, d]) => `<li><strong>${esc(n)}</strong><span>${esc(d)}</span></li>`).join('')}</ul></div>`).join('')}
+          <div class="list-card"><h3>Кофе</h3>${rows(COFFEE)}</div></div>`,
+      },
+      {
+        id: 'hookah', title: 'Кальяны',
+        html: `<p class="hookah-price"><strong class="mono">${num(HOOKAH.price)}</strong> за любой вкус</p>
+          <ul class="hookah-list">${HOOKAH.items.map(([n, s, d]) => `<li><div class="hookah-head"><strong>${esc(n)}</strong><span class="strength s${s} mono">${STRENGTH[s]}</span></div><p>${esc(d)}</p></li>`).join('')}</ul>`,
+      },
+    ];
+
+    document.getElementById('menu-nav').innerHTML = sections.map((s) => `<a href="#${s.id}">${s.title}</a>`).join('');
+    document.getElementById('menu-main').innerHTML = sections.map((s) => `<section class="menu-section" id="${s.id}" aria-labelledby="h-${s.id}"><h2 id="h-${s.id}">${s.title}</h2>${s.html}</section>`).join('');
+
+    /* Подсветка текущего раздела в навигации */
+    const links = [...document.querySelectorAll('#menu-nav a')];
+    const spy = new IntersectionObserver((entries) => {
+      entries.forEach((en) => {
+        if (!en.isIntersecting) return;
+        links.forEach((a) => {
+          const on = a.hash === '#' + en.target.id;
+          a.classList.toggle('active', on);
+          if (on) a.parentElement.scrollTo({ left: a.offsetLeft - 16, behavior: 'smooth' });
+        });
+      });
+    }, { rootMargin: '-20% 0px -70% 0px' });
+    document.querySelectorAll('.menu-section').forEach((s) => spy.observe(s));
+
+    /* Секции создаются скриптом, поэтому к якорю из адреса переходим вручную */
+    if (location.hash) document.querySelector(location.hash)?.scrollIntoView();
+  </script>
+  <script src="motion.js"></script>
+</body>
+</html>
