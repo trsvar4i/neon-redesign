@@ -34,6 +34,8 @@ const ICONS = {
   guests: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.5-4 3-6 6.500-6s6 2 6.500 6"/><path d="M16 4.800a3.500 3.500 0 0 1 0 6.400"/><path d="M18.500 14.500c1.700.8 2.700 2.600 3 5.500"/></svg>',
   mic: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.500 11.500a6.500 6.500 0 0 0 13 0"/><path d="M12 18v3"/></svg>',
   arrow: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>',
+  chevron: '<svg class="cselect-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>',
+  check: '<svg class="cselect-check" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.500 4.500 4.500L19 7.500"/></svg>',
 };
 const guestsText = (c) => 'до ' + c.cap + ' ' + plural(c.cap, 'гостя', 'гостей', 'гостей');
 /* Цена с гостя считается по числу гостей из подбора; для одного гостя она равна цене кабинки */
@@ -269,6 +271,7 @@ function renderBooking() {
   $('#b-cabin').value = book.cabin;
 
   renderTime();
+  customSelects.forEach(refreshSelect);
 
   const maxHours = Math.max(1, Math.floor((CLOSE - book.time) / 60));
   book.hours = Math.min(book.hours, maxHours);
@@ -477,6 +480,126 @@ function renderGames() {
   $('#game-groups').innerHTML = html.join('') || '<p class="game-empty">Такой игры в списке нет. Можно установить её в кабинке с вашего аккаунта: спросите сотрудника.</p>';
 }
 
+/* ——— Выпадающие списки формы ———
+   Системный список браузера анимировать нельзя, поэтому поверх скрытого select рисуем свой.
+   Сам select остаётся источником значения: остальной код работает с ним как обычно. */
+const customSelects = [];
+
+function refreshSelect(cs) {
+  const { select, panel, valueEl } = cs;
+  if (cs.signature !== select.innerHTML) {
+    cs.signature = select.innerHTML;
+    let n = 0;
+    const optionHtml = (o) => {
+      const [name, ...meta] = o.textContent.split(' · ');
+      const i = n++;
+      return `<div class="cselect-option" role="option" id="${cs.id}-o${i}" data-value="${esc(o.value)}" style="--i:${i}">
+        <span class="cselect-text"><span>${esc(name)}</span>${meta.length ? `<small>${esc(meta.join(' · '))}</small>` : ''}</span>${ICONS.check}</div>`;
+    };
+    panel.innerHTML = [...select.children].map((el) => (el.tagName === 'OPTGROUP'
+      ? `<div class="cselect-group" role="group" aria-label="${esc(el.label)}"><div class="cselect-group-label" style="--i:${n}">${esc(el.label)}</div>${[...el.children].map(optionHtml).join('')}</div>`
+      : optionHtml(el))).join('');
+  }
+  const current = select.selectedOptions[0];
+  valueEl.textContent = current ? current.textContent : '';
+  $$('.cselect-option', panel).forEach((o) => o.setAttribute('aria-selected', o.dataset.value === select.value));
+}
+
+function setActiveOption(cs, option, reveal = true) {
+  $$('.cselect-option.active', cs.panel).forEach((o) => o.classList.remove('active'));
+  if (!option) { cs.trigger.removeAttribute('aria-activedescendant'); return; }
+  option.classList.add('active');
+  cs.trigger.setAttribute('aria-activedescendant', option.id);
+  if (reveal) {
+    const { panel } = cs;
+    const top = option.offsetTop;
+    if (top < panel.scrollTop) panel.scrollTop = top;
+    else if (top + option.offsetHeight > panel.scrollTop + panel.clientHeight) panel.scrollTop = top + option.offsetHeight - panel.clientHeight;
+  }
+}
+
+function openSelect(cs) {
+  customSelects.forEach((other) => { if (other !== cs) closeSelect(other); });
+  cs.root.classList.add('open');
+  cs.trigger.setAttribute('aria-expanded', 'true');
+  const selected = $('.cselect-option[aria-selected="true"]', cs.panel) || $('.cselect-option', cs.panel);
+  cs.panel.scrollTop = selected ? Math.max(0, selected.offsetTop - cs.panel.clientHeight / 2 + selected.offsetHeight / 2) : 0;
+  setActiveOption(cs, selected, false);
+  /* Если список не помещается в окне формы, плавно прокручиваем форму */
+  const dialog = cs.root.closest('dialog');
+  if (dialog) {
+    const overflow = cs.panel.getBoundingClientRect().bottom + 12 - dialog.getBoundingClientRect().bottom;
+    if (overflow > 0) dialog.scrollBy({ top: overflow, behavior: motionOK() ? 'smooth' : 'auto' });
+  }
+}
+
+function closeSelect(cs) {
+  cs.root.classList.remove('open');
+  cs.trigger.setAttribute('aria-expanded', 'false');
+  setActiveOption(cs, null);
+}
+
+function chooseOption(cs, option) {
+  cs.select.value = option.dataset.value;
+  cs.select.dispatchEvent(new Event('change', { bubbles: true }));
+  refreshSelect(cs);
+  closeSelect(cs);
+  cs.trigger.focus();
+}
+
+function enhanceSelect(select) {
+  const id = `cselect-${customSelects.length + 1}`;
+  const root = document.createElement('div');
+  root.className = 'cselect';
+  root.innerHTML = `
+    <button class="cselect-trigger" type="button" id="${id}-trigger" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-controls="${id}-list">
+      <span class="cselect-value"></span>${ICONS.chevron}
+    </button>
+    <div class="cselect-panel" id="${id}-list" role="listbox"></div>`;
+  select.before(root);
+  root.append(select);
+  select.classList.add('cselect-native');
+  select.tabIndex = -1;
+  select.setAttribute('aria-hidden', 'true');
+  const label = $(`label[for="${select.id}"]`);
+  const trigger = $('.cselect-trigger', root);
+  if (label) label.htmlFor = trigger.id;
+
+  const cs = { id, select, root, trigger, panel: $('.cselect-panel', root), valueEl: $('.cselect-value', root), signature: null };
+  customSelects.push(cs);
+  refreshSelect(cs);
+
+  trigger.addEventListener('click', () => (root.classList.contains('open') ? closeSelect(cs) : openSelect(cs)));
+  trigger.addEventListener('keydown', (e) => {
+    const isOpen = root.classList.contains('open');
+    if (!isOpen) {
+      if (['ArrowDown', 'ArrowUp'].includes(e.key)) { e.preventDefault(); openSelect(cs); }
+      return;
+    }
+    const options = $$('.cselect-option', cs.panel);
+    const current = options.findIndex((o) => o.classList.contains('active'));
+    const moves = { ArrowDown: Math.min(current + 1, options.length - 1), ArrowUp: Math.max(current - 1, 0), Home: 0, End: options.length - 1 };
+    if (e.key in moves) { e.preventDefault(); setActiveOption(cs, options[moves[e.key]]); }
+    else if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); if (options[current]) chooseOption(cs, options[current]); }
+    else if (e.key === 'Escape') { e.preventDefault(); closeSelect(cs); }
+    else if (e.key === 'Tab') closeSelect(cs);
+  });
+  /* Фокус остаётся на кнопке, чтобы работала клавиатура */
+  cs.panel.addEventListener('mousedown', (e) => e.preventDefault());
+  cs.panel.addEventListener('click', (e) => {
+    const option = e.target.closest('.cselect-option');
+    if (option) chooseOption(cs, option);
+  });
+  cs.panel.addEventListener('mousemove', (e) => {
+    const option = e.target.closest('.cselect-option');
+    if (option && !option.classList.contains('active')) setActiveOption(cs, option, false);
+  });
+}
+
+document.addEventListener('click', (e) => {
+  customSelects.forEach((cs) => { if (!cs.root.contains(e.target)) closeSelect(cs); });
+});
+
 /* ——— События ——— */
 document.addEventListener('click', (e) => {
   const t = e.target.closest('button, a');
@@ -560,8 +683,19 @@ if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
 
 /* Клик по затемнению закрывает диалог */
 $$('dialog').forEach((d) => {
-  d.addEventListener('click', (e) => { if (e.target === d) closeDialog(d); });
-  d.addEventListener('cancel', (e) => { e.preventDefault(); closeDialog(d); });
+  d.addEventListener('click', (e) => {
+    if (e.target !== d) return;
+    const box = d.getBoundingClientRect();
+    const inside = e.clientX >= box.left && e.clientX <= box.right && e.clientY >= box.top && e.clientY <= box.bottom;
+    if (!inside) closeDialog(d);
+  });
+  d.addEventListener('cancel', (e) => {
+    e.preventDefault();
+    const openList = customSelects.find((cs) => d.contains(cs.root) && cs.root.classList.contains('open'));
+    if (openList) closeSelect(openList);
+    else closeDialog(d);
+  });
+  d.addEventListener('close', () => customSelects.forEach(closeSelect));
 });
 
 /* Аккордеон FAQ: высота раскрывается и сворачивается за 200 мс */
@@ -615,6 +749,8 @@ function applyHash() {
 }
 
 fillCabinSelect();
+enhanceSelect($('#b-cabin'));
+enhanceSelect($('#b-time'));
 renderStatic();
 renderFinder();
 renderGames();
