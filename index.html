@@ -8,8 +8,8 @@
   <meta name="theme-color" content="#0b0b09">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://thb.tildacdn.net">
   <link href="https://fonts.googleapis.com/css2?family=Martian+Mono:wght@400;600&family=Onest:wght@400;500;700&family=Sofia+Sans+Extra+Condensed:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="preload" as="image" type="image/webp" imagesrcset="img/tild3363-3566-4533-b564-633737363361-800.webp 800w, img/tild3363-3566-4533-b564-633737363361-1200.webp 1200w, img/tild3363-3566-4533-b564-633737363361-1600.webp 1600w" imagesizes="(max-width: 960px) 100vw, 60vw">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -17,17 +17,18 @@
 
   <header class="site-header" id="top">
     <a class="logo" href="index.html" aria-label="NEON, на главную">
-      <img src="https://thb.tildacdn.net/tild3866-3061-4435-a433-343161316332/-/resize/160x/IMG_4835.PNG" alt="" width="60" height="54">
+      <img src="img/logo.webp" alt="" width="60" height="54">
     </a>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav">Меню</button>
     <nav class="nav" id="nav" aria-label="Основная навигация">
       <a href="#cabins">Кабинки</a>
-      <a href="#branches">Адреса</a>
       <a href="#offers">Акции</a>
       <a href="menu.html">Еда и бар</a>
-      <a href="#games">Игры</a>
-      <a href="#faq">Вопросы</a>
       <a href="#contacts">Контакты</a>
+      <div class="nav-actions">
+        <button class="btn btn-volt btn-block" type="button" data-book>Забронировать</button>
+        <a class="btn btn-ghost btn-block" href="tel:+998781138951">Позвонить</a>
+      </div>
     </nav>
     <a class="header-phone mono" data-phone href="tel:+998781138951">+998 78 113 89 51</a>
     <button class="btn btn-volt btn-sm header-cta" type="button" data-book>Забронировать</button>
@@ -36,9 +37,9 @@
   <main>
     <section class="hero" aria-labelledby="hero-title">
       <img class="hero-photo"
-        src="https://thb.tildacdn.net/tild3363-3566-4533-b564-633737363361/-/resize/1200x/__15.jpg"
-        srcset="https://thb.tildacdn.net/tild3363-3566-4533-b564-633737363361/-/resize/800x/__15.jpg 800w, https://thb.tildacdn.net/tild3363-3566-4533-b564-633737363361/-/resize/1200x/__15.jpg 1200w, https://thb.tildacdn.net/tild3363-3566-4533-b564-633737363361/-/resize/1680x/__15.jpg 1680w"
-        sizes="100vw" alt="Кабинка NEON: неоновый портрет на зелёной стене, телевизор с PS5 и диван" fetchpriority="high">
+        src="img/tild3363-3566-4533-b564-633737363361-1200.webp"
+        srcset="img/tild3363-3566-4533-b564-633737363361-800.webp 800w, img/tild3363-3566-4533-b564-633737363361-1200.webp 1200w, img/tild3363-3566-4533-b564-633737363361-1600.webp 1600w"
+        sizes="(max-width: 960px) 100vw, 60vw" alt="Кабинка NEON: неоновый портрет на зелёной стене, телевизор с PS5 и диван" fetchpriority="high">
       <div class="hero-inner wrap">
         <div class="hero-copy">
           <p class="eyebrow mono">Ташкент · 2 адреса · 30+ кабинок</p>
@@ -210,17 +211,15 @@
     <div class="wrap footer-inner">
       <span class="mono">© NEON, Ташкент</span>
       <nav aria-label="Ссылки в подвале" class="footer-links">
+        <a href="#branches">Адреса</a>
+        <a href="#games">Игры</a>
+        <a href="#faq">Вопросы</a>
         <a id="foot-ig" target="_blank" rel="noopener">Instagram</a>
         <a id="foot-tg" target="_blank" rel="noopener">Telegram</a>
         <a id="foot-review" target="_blank" rel="noopener">Оставить отзыв</a>
       </nav>
     </div>
   </footer>
-
-  <div class="mobile-bar">
-    <a class="btn btn-ghost" data-phone-only href="tel:+998781138951">Позвонить</a>
-    <button class="btn btn-volt" type="button" data-book>Забронировать</button>
-  </div>
 
   <dialog class="sheet" id="cabin-dialog" aria-labelledby="cabin-dialog-title">
     <button class="sheet-close" type="button" data-close aria-label="Закрыть">✕</button>

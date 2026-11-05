@@ -82,8 +82,8 @@ h3 { font-weight: 700; line-height: 1.2; }
 }
 .logo img { height: 50px; width: auto; }
 .nav { display: flex; gap: 22px; margin-right: auto; }
-.nav a { font-size: 15px; font-weight: 500; text-decoration: none; padding: 8px 0; color: var(--muted); }
-.nav a:hover { color: var(--volt); }
+.nav a:not(.btn) { font-size: 15px; font-weight: 500; text-decoration: none; padding: 8px 0; color: var(--muted); }
+.nav a:not(.btn):hover { color: var(--volt); }
 .nav-toggle { display: none; }
 .header-phone { font-size: 13px; text-decoration: none; white-space: nowrap; }
 .header-phone:hover { color: var(--volt); }
@@ -249,7 +249,7 @@ h3 { font-weight: 700; line-height: 1.2; }
 .footer-links { display: flex; flex-wrap: wrap; gap: 6px 22px; font-size: 15px; }
 .footer-links a { min-height: 44px; display: inline-flex; align-items: center; text-underline-offset: 4px; }
 .footer-links a:hover { color: var(--volt); }
-.mobile-bar { display: none; }
+.nav-actions { display: none; }
 
 /* ——— Диалоги ——— */
 .sheet { width: min(620px, calc(100vw - 32px)); max-height: calc(100dvh - 48px); padding: 0; background: var(--panel); color: var(--text); border: 1px solid var(--line); border-radius: 18px; overflow-y: auto; overscroll-behavior: contain; }
@@ -404,7 +404,9 @@ h3 { font-weight: 700; line-height: 1.2; }
   .header-cta { display: none; }
   .nav { display: none; position: absolute; left: 0; right: 0; top: 100%; flex-direction: column; gap: 0; padding: 8px var(--gutter) 16px; background: var(--ink); border-bottom: 1px solid var(--line); }
   .nav.open { display: flex; }
-  .nav a { padding: 12px 0; font-size: 18px; color: var(--text); }
+  .nav a:not(.btn) { padding: 14px 0; font-size: 20px; font-weight: 500; color: var(--text); border-bottom: 1px solid var(--line); }
+  .nav-actions { display: grid; gap: 8px; padding-top: 16px; }
+  .nav-toggle { min-width: 84px; }
   .hero { min-height: 0; }
   .hero-photo { left: 0; width: 100%; height: 270px; bottom: auto; object-position: 12% 50%; }
   .hero::after { background: linear-gradient(180deg, rgba(11,11,9,0) 110px, var(--ink) 270px); }
@@ -414,9 +416,7 @@ h3 { font-weight: 700; line-height: 1.2; }
   .deal .btn { justify-self: start; }
   .club, .food-inner, .faq-layout { grid-template-columns: minmax(0, 1fr); }
   .faq h2 { position: static; }
-  .mobile-bar { position: fixed; z-index: 35; left: 0; right: 0; bottom: 0; display: grid; grid-template-columns: 1fr 1.6fr; gap: 8px; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); background: rgba(11, 11, 9, .96); border-top: 1px solid var(--line); }
-  body:not(.menu-page) { padding-bottom: calc(74px + env(safe-area-inset-bottom)); }
-}
+  }
 @media (max-width: 760px) {
   body { font-size: 16px; }
   .branch, .veranda { grid-template-columns: minmax(0, 1fr); }
@@ -484,7 +484,8 @@ h3 { font-weight: 700; line-height: 1.2; }
 .sheet.closing::backdrop { animation: fade-out .18s ease-in forwards; }
 
 /* Выпадающие элементы: fade + slide-in-from-top */
-.nav.open { --enter-opacity: 0; --enter-y: -8px; animation: enter .18s ease-out; }
+.nav.open { --enter-opacity: 0; --enter-y: -8px; animation: enter .2s ease-out; }
+.nav.closing { --exit-opacity: 0; --exit-y: -8px; animation: exit .18s ease-in forwards; }
 .filter-categories { --enter-opacity: 0; --enter-y: -8px; animation: enter .2s ease-out; }
 
 /* Карточки кабинок: появляются друг за другом при смене набора */

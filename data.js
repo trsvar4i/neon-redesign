@@ -14,10 +14,10 @@ const CONFIG = {
   review: 'https://access.clientomer.ru/feedback/123321/',
 };
 
-/* Фото лежат на CDN Тильды; thb.tildacdn.net умеет отдавать нужную ширину. */
+/* Фото лежат в папке img в формате WebP, у каждого три ширины: 480, 800 и 1200 */
 function photo(path, width) {
-  const [id, ...rest] = path.split('/');
-  return `https://thb.tildacdn.net/${id}/-/resize/${width}x/${rest.join('/')}`;
+  const size = [480, 800, 1200].find((w) => w >= width) || 1200;
+  return `img/${path.split('/')[0]}-${size}.webp`;
 }
 
 const ADDRESSES = {

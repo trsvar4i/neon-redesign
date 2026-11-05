@@ -578,14 +578,33 @@ $('#faq-list').addEventListener('click', (e) => {
   }
 });
 
+/* Мобильное меню: закрывается с анимацией, как и окна */
 const navToggle = $('.nav-toggle');
-navToggle.addEventListener('click', () => {
-  const open = navToggle.getAttribute('aria-expanded') !== 'true';
+const nav = $('#nav');
+let navTimer = null;
+
+function setNav(open) {
+  clearTimeout(navTimer);
   navToggle.setAttribute('aria-expanded', open);
-  $('#nav').classList.toggle('open', open);
-});
-$('#nav').addEventListener('click', (e) => {
-  if (e.target.tagName === 'A') { navToggle.setAttribute('aria-expanded', 'false'); $('#nav').classList.remove('open'); }
+  navToggle.textContent = open ? 'Закрыть' : 'Меню';
+  nav.classList.remove('closing');
+  if (open) {
+    nav.classList.add('open');
+  } else if (nav.classList.contains('open')) {
+    if (!motionOK()) { nav.classList.remove('open'); return; }
+    nav.classList.add('closing');
+    navTimer = setTimeout(() => nav.classList.remove('open', 'closing'), 180);
+  }
+}
+
+navToggle.addEventListener('click', () => setNav(navToggle.getAttribute('aria-expanded') !== 'true'));
+nav.addEventListener('click', (e) => { if (e.target.closest('a, button')) setNav(false); });
+document.addEventListener('click', (e) => { if (!e.target.closest('.site-header')) setNav(false); });
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && navToggle.getAttribute('aria-expanded') === 'true') {
+    setNav(false);
+    navToggle.focus();
+  }
 });
 
 /* Старые адреса страниц (/luxury и другие) и ссылка «забронировать» с других страниц */
