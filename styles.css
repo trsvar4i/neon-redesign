@@ -386,6 +386,35 @@ h3 { font-weight: 700; line-height: 1.2; }
   .room-book { flex: 1 1 100%; justify-content: center; }
 }
 
+/* ——— Согласие в форме ——— */
+.consent { display: grid; gap: 6px; }
+.consent-label { position: relative; display: flex; align-items: flex-start; gap: 12px; min-height: 44px; font-size: 14px; line-height: 1.45; color: var(--muted); cursor: pointer; }
+.consent-label input { position: absolute; left: 0; top: 0; width: 26px; height: 26px; margin: 0; opacity: 0; cursor: pointer; }
+.consent-box { flex: none; position: relative; width: 26px; height: 26px; border-radius: 7px; border: 1.5px solid var(--muted); background: var(--ink); transition: background-color .15s, border-color .15s, box-shadow .2s; }
+.consent-box::after { content: ''; position: absolute; left: 8px; top: 3px; width: 6px; height: 12px; border: solid var(--ink); border-width: 0 2.5px 2.5px 0; transform: rotate(45deg) scale(.5); opacity: 0; transition: transform .15s ease-out, opacity .15s; }
+.consent-label input:checked + .consent-box { background: var(--volt); border-color: var(--volt); }
+.consent-label input:checked + .consent-box::after { transform: rotate(45deg) scale(1); opacity: 1; }
+.consent-label input:focus-visible + .consent-box { outline: 3px solid var(--volt); outline-offset: 2px; }
+.consent-label input[aria-invalid='true'] + .consent-box { border-color: #ff6b5e; }
+.consent-label .text-link { color: var(--text); }
+.consent-label .text-link:hover { color: var(--volt); }
+
+/* ——— Страница условий ——— */
+.legal-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 12px; border-bottom: 1px solid var(--line); max-width: none; }
+.legal-header .logo img { height: 44px; width: auto; }
+.legal { max-width: 800px; padding-block: clamp(32px, 6vw, 72px); }
+.legal h1 { font-size: clamp(56px, 9vw, 104px); }
+.legal-date { margin-top: 14px; font-size: 13px; color: var(--muted); }
+.legal-draft { margin-top: 20px; padding: 12px 14px; border-radius: 10px; background: var(--volt); color: var(--ink); font-size: 15px; }
+.legal section { margin-top: clamp(28px, 4vw, 40px); }
+.legal h2 { font: 700 21px/1.25 var(--body); text-transform: none; letter-spacing: 0; margin-bottom: 10px; }
+.legal p + p { margin-top: 10px; }
+.legal ul { list-style: disc; padding-left: 22px; display: grid; gap: 8px; }
+.legal p, .legal li { color: #d2d1c5; }
+.legal .legal-draft { color: var(--ink); }
+.legal .legal-date { color: var(--muted); }
+.legal mark { background: var(--volt-dim); color: var(--volt); padding: 0 4px; border-radius: 4px; }
+
 /* ——— Адаптив ——— */
 @media (max-width: 1240px) {
   .header-phone { display: none; }

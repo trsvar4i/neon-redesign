@@ -340,9 +340,13 @@ function validate() {
   phone.setAttribute('aria-invalid', !phoneOk);
   $('#b-name-err').hidden = nameOk;
   $('#b-phone-err').hidden = phoneOk;
+  const terms = $('#b-terms');
+  $('#b-terms-err').hidden = terms.checked;
+  terms.setAttribute('aria-invalid', !terms.checked);
   if (!nameOk) name.focus();
   else if (!phoneOk) phone.focus();
-  return nameOk && phoneOk;
+  else if (!terms.checked) terms.focus();
+  return nameOk && phoneOk && terms.checked;
 }
 
 async function submitBooking(e) {
@@ -358,7 +362,7 @@ async function submitBooking(e) {
     : `${dayLabel(fromISO(book.date))}, ${range}`;
   const payload = {
     place, date: book.date, start: clock(book.time), hours: book.hours, guests: book.guests,
-    name: $('#b-name').value.trim(), phone: $('#b-phone').value.trim(),
+    name: $('#b-name').value.trim(), phone: $('#b-phone').value.trim(), termsAccepted: true,
     estimate: cabin ? estimate(cabin, book.date, book.time, book.hours).total : null,
   };
 
@@ -519,6 +523,9 @@ $('#b-phone').addEventListener('input', (e) => {
 });
 $('#b-name').addEventListener('input', (e) => {
   if (e.target.value.trim()) { e.target.setAttribute('aria-invalid', 'false'); $('#b-name-err').hidden = true; }
+});
+$('#b-terms').addEventListener('change', (e) => {
+  if (e.target.checked) { e.target.setAttribute('aria-invalid', 'false'); $('#b-terms-err').hidden = true; }
 });
 $('#book-form').addEventListener('submit', submitBooking);
 $('#game-search').addEventListener('input', renderGames);

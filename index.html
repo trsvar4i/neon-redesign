@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Martian+Mono:wght@400;600&family=Onest:wght@400;500;700&family=Sofia+Sans+Extra+Condensed:wght@700;800&display=swap" rel="stylesheet">
   <link rel="preload" as="image" type="image/webp" imagesrcset="img/tild3363-3566-4533-b564-633737363361-800.webp 800w, img/tild3363-3566-4533-b564-633737363361-1200.webp 1200w, img/tild3363-3566-4533-b564-633737363361-1600.webp 1600w" imagesizes="(max-width: 960px) 100vw, 60vw">
-  <link rel="stylesheet" href="styles.css?v=20261106">
+  <link rel="stylesheet" href="styles.css?v=20261106b">
 </head>
 <body>
   <a class="skip" href="#cabins">Перейти к кабинкам</a>
@@ -219,6 +219,7 @@
         <a id="foot-ig" target="_blank" rel="noopener">Instagram</a>
         <a id="foot-tg" target="_blank" rel="noopener">Telegram</a>
         <a id="foot-review" target="_blank" rel="noopener">Оставить отзыв</a>
+        <a href="terms.html">Условия пользования</a>
       </nav>
     </div>
   </footer>
@@ -284,6 +285,14 @@
           </div>
         </div>
         <div class="total" id="b-total" aria-live="polite"></div>
+        <div class="consent">
+          <label class="consent-label">
+            <input type="checkbox" id="b-terms" required aria-describedby="b-terms-err">
+            <span class="consent-box" aria-hidden="true"></span>
+            <span>Принимаю <a class="text-link" href="terms.html" target="_blank" rel="noopener">условия пользования</a> и даю согласие на обработку моего имени и телефона для брони</span>
+          </label>
+          <p class="field-error" id="b-terms-err" hidden>Чтобы отправить заявку, примите условия</p>
+        </div>
         <p class="field-error" id="b-send-err" hidden></p>
         <button class="btn btn-volt btn-block" type="submit" id="b-submit">Отправить заявку</button>
       </form>
@@ -296,8 +305,8 @@
     </div>
   </dialog>
 
-  <script src="data.js?v=20261106"></script>
-  <script src="app.js?v=20261106"></script>
-  <script src="motion.js?v=20261106"></script>
+  <script src="data.js?v=20261106b"></script>
+  <script src="app.js?v=20261106b"></script>
+  <script src="motion.js?v=20261106b"></script>
 </body>
 </html>
