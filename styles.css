@@ -250,6 +250,9 @@ h3 { font-weight: 700; line-height: 1.2; }
 .footer-links a { min-height: 44px; display: inline-flex; align-items: center; text-underline-offset: 4px; }
 .footer-links a:hover { color: var(--volt); }
 .nav-actions { display: none; }
+.nav-scrim { display: none; }
+.hero-cta { display: none; }
+.loc-short { display: none; }
 
 /* ——— Диалоги ——— */
 .sheet { width: min(620px, calc(100vw - 32px)); max-height: calc(100dvh - 48px); padding: 0; background: var(--panel); color: var(--text); border: 1px solid var(--line); border-radius: 18px; overflow-y: auto; overscroll-behavior: contain; }
@@ -403,7 +406,6 @@ h3 { font-weight: 700; line-height: 1.2; }
   .nav-toggle { display: block; min-height: 44px; padding: 8px 14px; background: none; border: 1px solid var(--line); border-radius: 9px; order: 2; font-weight: 500; }
   .header-cta { display: none; }
   .nav { display: none; position: absolute; left: 0; right: 0; top: 100%; flex-direction: column; gap: 0; padding: 8px var(--gutter) 16px; background: var(--ink); border-bottom: 1px solid var(--line); }
-  .nav.open { display: flex; }
   .nav a:not(.btn) { padding: 14px 0; font-size: 20px; font-weight: 500; color: var(--text); border-bottom: 1px solid var(--line); }
   .nav-actions { display: grid; gap: 8px; padding-top: 16px; }
   .nav-toggle { min-width: 84px; }
@@ -484,8 +486,6 @@ h3 { font-weight: 700; line-height: 1.2; }
 .sheet.closing::backdrop { animation: fade-out .18s ease-in forwards; }
 
 /* Выпадающие элементы: fade + slide-in-from-top */
-.nav.open { --enter-opacity: 0; --enter-y: -8px; animation: enter .2s ease-out; }
-.nav.closing { --exit-opacity: 0; --exit-y: -8px; animation: exit .18s ease-in forwards; }
 .filter-categories { --enter-opacity: 0; --enter-y: -8px; animation: enter .2s ease-out; }
 
 /* Карточки кабинок: появляются друг за другом при смене набора */
@@ -513,7 +513,52 @@ h3 { font-weight: 700; line-height: 1.2; }
   .sheet.closing { --exit-opacity: 1; --exit-scale: 1; --exit-y: 100%; animation: exit .18s ease-in forwards; }
 }
 
+/* ——— Мобильное меню: выезжает и уезжает за .3 с, под ним плавно затемняется страница ——— */
+@media (max-width: 960px) {
+  .nav {
+    display: flex; visibility: hidden; opacity: 0; pointer-events: none;
+    clip-path: inset(0 0 100% 0); transform: translateY(-12px);
+    transition: clip-path .3s cubic-bezier(.4, 0, .2, 1), opacity .3s ease, transform .3s cubic-bezier(.4, 0, .2, 1), visibility 0s linear .3s;
+  }
+  .nav.open {
+    visibility: visible; opacity: 1; pointer-events: auto;
+    clip-path: inset(0 0 -20px 0); transform: none;
+    transition: clip-path .34s cubic-bezier(.2, .7, .2, 1), opacity .24s ease, transform .34s cubic-bezier(.2, .7, .2, 1), visibility 0s;
+  }
+  .nav-scrim {
+    display: block; position: fixed; inset: 0; z-index: 39; background: rgba(0, 0, 0, .6);
+    visibility: hidden; opacity: 0; transition: opacity .3s ease, visibility 0s linear .3s;
+  }
+  .nav-scrim.open { visibility: visible; opacity: 1; transition: opacity .3s ease, visibility 0s; }
+
+  /* Первый экран: вместо дублирующих фильтров одна кнопка */
+  .quick { display: none; }
+  .hero-cta { display: inline-flex; justify-self: start; }
+}
+
+/* ——— Панель подбора на телефоне: компактно, без подписей и подсказок ——— */
+@media (max-width: 760px) {
+  .filters { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 10px 12px; padding: 10px; }
+  .filter-location, .filter-categories { grid-column: 1 / -1; }
+  .filter-location > .filter-label, .filter-categories > .filter-label { display: none; }
+  .location-options { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+  .location-options button { min-height: 46px; padding: 8px; text-align: center; align-content: center; }
+  .location-options strong { font-size: 15px; }
+  .loc-full, .loc-hint { display: none; }
+  .loc-short { display: inline; }
+  .filter-categories { padding: 0; }
+  .filters > .filter-group { justify-content: flex-start; gap: 8px; min-height: 44px; }
+  .filters > .toggle { justify-self: end; }
+  .filters .stepper button { width: 40px; height: 40px; }
+  #cabins .section-lead { font-size: 15px; }
+  #cabins .section-head { gap: 10px; margin-bottom: 16px; }
+  .result-count { margin-block: 12px; font-size: 14px; }
+  .finder { padding-top: 40px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after, ::backdrop { animation: none !important; transition: none !important; }
   .reveal { opacity: 1; transform: none; }
+  .nav, .nav-scrim { transform: none !important; clip-path: none !important; transition: opacity .2s ease, visibility 0s linear .2s !important; }
+  .nav.open, .nav-scrim.open { transition: opacity .2s ease, visibility 0s !important; }
 }

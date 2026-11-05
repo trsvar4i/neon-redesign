@@ -392,7 +392,7 @@ async function submitBooking(e) {
 function renderStatic() {
   const inAddress = (key) => BRANCHES.filter((b) => b.address === key);
   $('#location-filter').innerHTML = Object.entries(ADDRESSES).map(([key, addr]) => `
-    <button type="button" data-location="${key}"><strong>${esc(addr.title)}</strong><span>${esc(addr.hint)}</span></button>`).join('');
+    <button type="button" data-location="${key}"><strong><span class="loc-full">${esc(addr.title)}</span><span class="loc-short">${esc(addr.shortTitle)}</span></strong><span class="loc-hint">${esc(addr.hint)}</span></button>`).join('');
 
   const branchRow = (b) => {
     const list = CABINS.filter((c) => c.b === b.id);
@@ -578,23 +578,16 @@ $('#faq-list').addEventListener('click', (e) => {
   }
 });
 
-/* Мобильное меню: закрывается с анимацией, как и окна */
+/* Мобильное меню: плавность задана в CSS, здесь только переключаем состояние */
 const navToggle = $('.nav-toggle');
 const nav = $('#nav');
-let navTimer = null;
+const navScrim = $('.nav-scrim');
 
 function setNav(open) {
-  clearTimeout(navTimer);
   navToggle.setAttribute('aria-expanded', open);
   navToggle.textContent = open ? 'Закрыть' : 'Меню';
-  nav.classList.remove('closing');
-  if (open) {
-    nav.classList.add('open');
-  } else if (nav.classList.contains('open')) {
-    if (!motionOK()) { nav.classList.remove('open'); return; }
-    nav.classList.add('closing');
-    navTimer = setTimeout(() => nav.classList.remove('open', 'closing'), 180);
-  }
+  nav.classList.toggle('open', open);
+  navScrim.classList.toggle('open', open);
 }
 
 navToggle.addEventListener('click', () => setNav(navToggle.getAttribute('aria-expanded') !== 'true'));

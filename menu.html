@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Martian+Mono:wght@400;600&family=Onest:wght@400;500;700&family=Sofia+Sans+Extra+Condensed:wght@700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=20261106">
 </head>
 <body class="menu-page">
   <header class="menu-header">
@@ -37,7 +37,7 @@
     </div>
   </footer>
 
-  <script src="data.js"></script>
+  <script src="data.js?v=20261106"></script>
   <script>
     const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
     const num = (n) => Math.round(n).toLocaleString('ru-RU').replace(/\s/g, ' ');
@@ -93,6 +93,6 @@
     /* Секции создаются скриптом, поэтому к якорю из адреса переходим вручную */
     if (location.hash) document.querySelector(location.hash)?.scrollIntoView();
   </script>
-  <script src="motion.js"></script>
+  <script src="motion.js?v=20261106"></script>
 </body>
 </html>

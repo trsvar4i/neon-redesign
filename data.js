@@ -23,6 +23,7 @@ function photo(path, width) {
 const ADDRESSES = {
   mirabad: {
     title: 'Авлиё-Ота, 39',
+    shortTitle: 'Авлиё-Ота, 39',
     note: 'Напротив ЖК Mirabad Avenue, рядом с Госпитальным рынком',
     branches: 'Classic, Premium, Luxury',
     hint: 'Напротив ЖК Mirabad Avenue',
@@ -31,6 +32,7 @@ const ADDRESSES = {
   },
   shevchenko: {
     title: 'Тараса Шевченко, 38',
+    shortTitle: 'Шевченко, 38',
     note: 'Пешая улица в центре города',
     branches: 'Shevchenko',
     hint: 'Пешая улица в центре города',
